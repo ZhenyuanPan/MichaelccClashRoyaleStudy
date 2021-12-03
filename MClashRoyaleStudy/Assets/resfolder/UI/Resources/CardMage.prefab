@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 4449372208758493497, guid: eb43c4a28faeb5342ac1b53d2f9ecdad,
         type: 3}
       propertyPath: m_Name
-      value: CardForward
+      value: CardMage
       objectReference: {fileID: 0}
     - target: {fileID: 4449372208758493496, guid: eb43c4a28faeb5342ac1b53d2f9ecdad,
         type: 3}

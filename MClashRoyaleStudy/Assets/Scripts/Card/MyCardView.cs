@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ using UnityEngine.EventSystems;
 public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerDownHandler
 {
     public MyCard data;
-    public int index;
+    public int index = -1;
     public bool isInteraction;
     private Camera mainCam;
     private Transform previewHolder;
@@ -28,7 +29,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (isInteraction == false)
+        if (isInteraction == false || index == -1)
         {
             return;
         }
@@ -42,7 +43,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
     
     public void OnDrag(PointerEventData eventData)
     {
-        if (isInteraction == false)
+        if (isInteraction == false || index == -1)
         {
             return;
         }
@@ -62,7 +63,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             if (isDragging == false)
             {
                 //TODO 1.隐藏卡牌 2.从卡牌数据数组中找到该张卡牌的数据 3.取出小兵数据 4.取出小兵模型偏移 5.生成该卡牌对应的小兵数组, 并且将其设置为预览用的卡牌, 放到统一的节点下(previewHolder)
-                canvasGroup.alpha = 0f;
+                canvasGroup.alpha = 1f;
                 for (int i = 0; i < data.placeablesIndices.Length; i++)
                 {
                     int unitId = data.placeablesIndices[i];
@@ -80,10 +81,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
                     //TODO 取出小兵之间的偏移量(相對於鼠標偏移)
                     Vector3 offset = data.relativeOffsets[i];
                     //TODO 实例化小兵
-                    GameObject unitPrefab = Resources.Load<GameObject>(p.associatedPrefab);
-                    var unit = GameObject.Instantiate(unitPrefab,previewHolder,false);
-                    unit.transform.localPosition = offset;
-                    unit.GetComponent<MyPlaceableView>().data = p;
+                    MyPlaceableMgr.instance.StartCoroutine(ResLoadAsync(p,offset));
                 }
                 isDragging = true;
             }
@@ -92,13 +90,6 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         {
             if (isDragging)
             {
-                /*
-                 * 销毁previewHolder里的小兵。对元素数量有改变的列表遍历不能用foreach, 
-                 * 因为foreach遍历本质上是固定了角标遍历,
-                 * 如果移除了元素,角标改变则会造成无法遍历完整的bug
-                 * for循环遍历,角标从0开始,所以要对count-1
-                 * 
-                 */
                 for (int i = previewHolder.childCount-1; i >=0; i--)
                 {
                     Destroy(previewHolder.GetChild(i).gameObject);
@@ -111,28 +102,24 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         }
     }
 
-
-
+    
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (isInteraction == false)
+        if (isInteraction == false || index == -1)
         {
             return;
         }
-
-
         Ray ray = mainCam.ScreenPointToRay(eventData.position);
         bool hitGround = Physics.Raycast(ray,float.PositiveInfinity,1<<LayerMask.NameToLayer("PlayingField"));
         //出牌
         if (hitGround)
         {
+            OnCardUsed();
+            //销毁打出去的卡牌
+            Destroy(this.gameObject);
+            print("更新" + index);
             CardManager.instance.StartCoroutine(CardManager.instance.PromoteFromDeck(index, .5f));
             CardManager.instance.StartCoroutine(CardManager.instance.CreateCardInPreviewArea(1f));
-            OnCardUsed();
-            print("执行再生成卡牌");
-            //销毁打出去的卡牌 
-            Destroy(this.gameObject);
-           
         }
         else 
         {
@@ -149,6 +136,18 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             var trunit = previewHolder.GetChild(i);
             trunit.SetParent(MyPlaceableMgr.instance.transform,true);
             MyPlaceableMgr.instance.friendlyPlaceable.Add(trunit.GetComponent<MyPlaceableView>());
+        }
+    }
+
+    IEnumerator ResLoadAsync(MyPlaceable myPlaceable, Vector3 offset) 
+    {
+        var resRequest = Resources.LoadAsync<GameObject>(myPlaceable.associatedPrefab);
+        yield return resRequest;
+        if (resRequest != null)
+        {
+            var unit = GameObject.Instantiate(resRequest.asset as GameObject, previewHolder, false);
+            unit.transform.localPosition = offset;
+            unit.GetComponent<MyPlaceableView>().data = myPlaceable;
         }
     }
 }
