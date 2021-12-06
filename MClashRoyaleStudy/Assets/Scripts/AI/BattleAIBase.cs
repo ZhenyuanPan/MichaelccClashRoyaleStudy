@@ -12,6 +12,8 @@ public enum AIState
 
 public  class BattleAIBase : MonoBehaviour
 {
+    public BattleAIBase target = null;// 用于储存攻击目标
+
     public AIState state = AIState.Idle;
     public virtual void OnIdle() { }
 

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityRoyale.Placeable;
 /// <summary>
 /// MyCardView V是视图层, 处理显示界面的任务,
 /// 1. 要存储我们出牌的是第几张卡
@@ -63,7 +64,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             if (isDragging == false)
             {
                 //TODO 1.隐藏卡牌 2.从卡牌数据数组中找到该张卡牌的数据 3.取出小兵数据 4.取出小兵模型偏移 5.生成该卡牌对应的小兵数组, 并且将其设置为预览用的卡牌, 放到统一的节点下(previewHolder)
-                canvasGroup.alpha = 1f;
+                canvasGroup.alpha = 0f;
                 for (int i = 0; i < data.placeablesIndices.Length; i++)
                 {
                     int unitId = data.placeablesIndices[i];
@@ -78,10 +79,12 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
                             break;
                         }
                     }
-                    //TODO 取出小兵之间的偏移量(相對於鼠標偏移)
+                    //TODO 取出小兵之间的偏移量(相對於鼠標偏移), 以及其他的属性赋值, 浅拷贝赋值, 对值类型字段操作独立出来, 防止一并修改所有的MyPlaceable对象
                     Vector3 offset = data.relativeOffsets[i];
+                    MyPlaceable pClone =  p.Clone();
+                    pClone.faction = Faction.Player;
                     //TODO 实例化小兵
-                    MyPlaceableMgr.instance.StartCoroutine(ResLoadAsync(p,offset));
+                    MyPlaceableMgr.instance.StartCoroutine(ResLoadAsync(pClone,offset));
                 }
                 isDragging = true;
             }
@@ -135,7 +138,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         {
             var trunit = previewHolder.GetChild(i);
             trunit.SetParent(MyPlaceableMgr.instance.transform,true);
-            MyPlaceableMgr.instance.friendlyPlaceable.Add(trunit.GetComponent<MyPlaceableView>());
+            MyPlaceableMgr.instance.friendlyPlaceablesList.Add(trunit.GetComponent<MyPlaceableView>());
         }
     }
 

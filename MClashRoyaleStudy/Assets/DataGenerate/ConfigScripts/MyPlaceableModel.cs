@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityRoyale;
+using UnityRoyale;
 
 
 
@@ -14,15 +14,15 @@ public partial class MyPlaceable
 
 		public string name;
 
-		//public Placeable.PlaceableType pType;
+		public Placeable.PlaceableType pType;
 
 		public string associatedPrefab;
 
 		public string alternatePrefab;
 
-		//public ThinkingPlaceable.AttackType attackType;
+		public ThinkingPlaceable.AttackType attackType;
 
-		//public Placeable.PlaceableTarget targetType;
+		public Placeable.PlaceableTarget targetType;
 
 		public float attackRatio;
 
@@ -54,11 +54,11 @@ public partial class MyPlaceableModel
         		list.Add(new MyPlaceable(){
 			id = 10000,
 			name = "Archer",
-			//pType = Placeable.PlaceableType.Unit,
+			pType = Placeable.PlaceableType.Unit,
 			associatedPrefab = "Archer Red",
 			alternatePrefab = "Archer Blue",
-			//attackType = ThinkingPlaceable.AttackType.Ranged,
-			//targetType = Placeable.PlaceableTarget.Both,
+			attackType = ThinkingPlaceable.AttackType.Ranged,
+			targetType = Placeable.PlaceableTarget.Both,
 			attackRatio = 1.5f,
 			damagePerAttack = 1f,
 			attackRange = 6f,
@@ -73,11 +73,11 @@ public partial class MyPlaceableModel
 		list.Add(new MyPlaceable(){
 			id = 10001,
 			name = "Mage",
-			//pType = Placeable.PlaceableType.Unit,
+			pType = Placeable.PlaceableType.Unit,
 			associatedPrefab = "Mage Red",
 			alternatePrefab = "Mage Blue",
-			//attackType = ThinkingPlaceable.AttackType.Ranged,
-			//targetType = Placeable.PlaceableTarget.Both,
+			attackType = ThinkingPlaceable.AttackType.Ranged,
+			targetType = Placeable.PlaceableTarget.Both,
 			attackRatio = 1.5f,
 			damagePerAttack = 3f,
 			attackRange = 4f,
@@ -92,11 +92,11 @@ public partial class MyPlaceableModel
 		list.Add(new MyPlaceable(){
 			id = 10002,
 			name = "Warrior",
-			//pType = Placeable.PlaceableType.Unit,
+			pType = Placeable.PlaceableType.Unit,
 			associatedPrefab = "Warrior Red",
 			alternatePrefab = "Warrior Blue",
-			//attackType = ThinkingPlaceable.AttackType.Melee,
-			//targetType = Placeable.PlaceableTarget.Both,
+			attackType = ThinkingPlaceable.AttackType.Melee,
+			targetType = Placeable.PlaceableTarget.Both,
 			attackRatio = 2.5f,
 			damagePerAttack = 4f,
 			attackRange = 2.5f,
