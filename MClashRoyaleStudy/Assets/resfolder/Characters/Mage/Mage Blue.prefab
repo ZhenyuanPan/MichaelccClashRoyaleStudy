@@ -11,22 +11,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mage Blue
       objectReference: {fileID: 0}
-    - target: {fileID: 677874269, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 677874271, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
-      propertyPath: m_Bones.Array.data[0]
-      value: 
-      objectReference: {fileID: 8584991783703064600}
-    - target: {fileID: 677874271, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: bfbc8c919d7c12947aa8154e211a1296, type: 2}
-    - target: {fileID: 677874271, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
-      propertyPath: m_RootBone
-      value: 
-      objectReference: {fileID: 8584991783703064600}
     - target: {fileID: 1122871592, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -71,10 +55,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5035176704641411430, guid: ddbc89a2e5731354497399c2803d9354,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 986888189626717334, guid: ddbc89a2e5731354497399c2803d9354,
+        type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 2348266241764958831, guid: 208c852a323ae3d44998f5b371b37ce4,
+        type: 3}
+    - target: {fileID: 677874269, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 2022460059, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 677874271, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
+      propertyPath: m_Bones.Array.data[0]
+      value: 
+      objectReference: {fileID: 8584991783703064600}
+    - target: {fileID: 677874271, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bfbc8c919d7c12947aa8154e211a1296, type: 2}
+    - target: {fileID: 677874271, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
+      propertyPath: m_RootBone
+      value: 
+      objectReference: {fileID: 8584991783703064600}
     - target: {fileID: 2022460061, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
       propertyPath: m_Bones.Array.data[0]
       value: 
@@ -385,22 +396,6 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.key1.b
       value: 0.7894781
       objectReference: {fileID: 0}
-    - target: {fileID: 3368897962327348152, guid: ddbc89a2e5731354497399c2803d9354,
-        type: 3}
-      propertyPath: projectilePrefab
-      value: 
-      objectReference: {fileID: 2348266241764958831, guid: 208c852a323ae3d44998f5b371b37ce4,
-        type: 3}
-    - target: {fileID: 3368897962327348152, guid: ddbc89a2e5731354497399c2803d9354,
-        type: 3}
-      propertyPath: projectileSpawnPoint
-      value: 
-      objectReference: {fileID: 8584991783229962960}
-    - target: {fileID: 5035176704641411430, guid: ddbc89a2e5731354497399c2803d9354,
-        type: 3}
-      propertyPath: OutputAudioMixerGroup
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5745771561536038601, guid: ddbc89a2e5731354497399c2803d9354,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -416,6 +411,17 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3368897962327348152, guid: ddbc89a2e5731354497399c2803d9354,
+        type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 2348266241764958831, guid: 208c852a323ae3d44998f5b371b37ce4,
+        type: 3}
+    - target: {fileID: 3368897962327348152, guid: ddbc89a2e5731354497399c2803d9354,
+        type: 3}
+      propertyPath: projectileSpawnPoint
+      value: 
+      objectReference: {fileID: 8584991783229962960}
     - target: {fileID: 1107439388053995260, guid: ddbc89a2e5731354497399c2803d9354,
         type: 3}
       propertyPath: attackSource

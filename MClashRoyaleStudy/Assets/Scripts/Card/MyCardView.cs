@@ -120,7 +120,6 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             OnCardUsed();
             //销毁打出去的卡牌
             Destroy(this.gameObject);
-            print("更新" + index);
             CardManager.instance.StartCoroutine(CardManager.instance.PromoteFromDeck(index, .5f));
             CardManager.instance.StartCoroutine(CardManager.instance.CreateCardInPreviewArea(1f));
         }

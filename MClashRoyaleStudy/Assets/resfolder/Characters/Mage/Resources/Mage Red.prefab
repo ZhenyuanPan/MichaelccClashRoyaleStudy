@@ -1564,8 +1564,11 @@ MonoBehaviour:
   data:
     id: 0
     name: 
+    pType: 0
     associatedPrefab: 
     alternatePrefab: 
+    attackType: 0
+    targetType: 0
     attackRatio: 0
     damagePerAttack: 0
     attackRange: 0
@@ -1575,6 +1578,7 @@ MonoBehaviour:
     speed: 0
     lifeTime: 0
     damagePerSecond: 0
+    faction: 2
 --- !u!114 &986888189626717334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1587,7 +1591,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b04460ba3af8404590c94fa1fb7476f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   state: 0
+  lastBlowTime: 0
+  projectile: {fileID: 2348266241764958831, guid: 16df5ca33880bf7409922364f4bdcc3d,
+    type: 3}
+  firePos: {fileID: 1360762279}
 --- !u!1 &1135473222
 GameObject:
   m_ObjectHideFlags: 0
