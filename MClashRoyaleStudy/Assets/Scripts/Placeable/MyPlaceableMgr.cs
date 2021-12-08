@@ -117,6 +117,9 @@ public class MyPlaceableMgr : MonoBehaviour
                             //这条逻辑走完记得break出状态机
                             break;
                         }
+                        //面朝被攻击者
+                        var tempTargetPos = new Vector3(ai.target.transform.position.x,0,ai.target.transform.position.z); 
+                        ai.transform.LookAt(tempTargetPos);
                         //执行攻击动作
                         ani.SetTrigger("Attack");
                         //设置最后一次攻击时间
@@ -145,7 +148,23 @@ public class MyPlaceableMgr : MonoBehaviour
                     break;
             }
         }
-      
+        //TODO 子弹飞行和命中运算, 循环投掷物projectilelist列表
+        for (int i = friendlyProjList.Count-1; i >= 0; i--)
+        {
+            var proj = friendlyProjList[i];
+            //映射到二维平面的速度矢量, 指向被减向量
+            proj.transform.Translate((new Vector3(proj.caster.target.transform.position.x, 0, proj.caster.target.transform.position.z) -new Vector3(proj.transform.position.x,0,proj.transform.position.z)).normalized * proj.speed);
+            //投掷物击中目标
+            //print(Vector3.Distance(proj.transform.position, proj.caster.target.transform.position));
+            if (Vector3.Distance(proj.transform.position,proj.caster.target.transform.position) <= 1f)
+            {
+                //妙啊, 不用重复写代码了
+                (proj.caster as UnitAI).OnDealDamage();
+                //完成一次伤害销毁投掷物
+                friendlyProjList.Remove(proj);
+                Destroy(proj.gameObject);
+            }
+        }
     }
 
     private bool IsInAttackRange(Vector3 myPos, Vector3 targetPos,float attackRange)

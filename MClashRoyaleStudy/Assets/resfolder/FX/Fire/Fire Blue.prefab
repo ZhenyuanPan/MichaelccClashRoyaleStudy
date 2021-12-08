@@ -9521,6 +9521,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82f45b93c6825d41ae6da78a8d99faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
+  startFirePos: {x: 0, y: 0, z: 0}
+  target: {fileID: 0}
+  speed: 4
+  progress: 0
 --- !u!1 &2348266242545143782
 GameObject:
   m_ObjectHideFlags: 0

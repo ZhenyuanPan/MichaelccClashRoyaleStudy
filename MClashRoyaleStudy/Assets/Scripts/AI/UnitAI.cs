@@ -10,6 +10,7 @@ class UnitAI:BattleAIBase
 {
     public GameObject projectile;
     public Transform firePos;
+    private MyProjectile myProj;
     public void OnDealDamage() 
     {
         print("OnDealDamage");
@@ -29,9 +30,11 @@ class UnitAI:BattleAIBase
     {
         //实例化一个投射物
         var go = Instantiate<GameObject>(projectile,firePos.position,Quaternion.identity);//放在手部位置(世界坐标),但是不以手部位父节点(不跟手移动)
-        //设置投掷物的释放者(用于投掷物命中目标后伤害结算)
-        go.GetComponent<MyProjectile>().caster = this;
-        //投掷物的飞行被MyPlaceableMgr统一管理
+        //设置投掷物的发射者
+        myProj = go.GetComponent<MyProjectile>();
+        myProj.caster = this;
+        //投掷物的飞行被MyPlaceableMgr统一管理, 伤害计算也在MyPlaceableMgr中计算
         MyPlaceableMgr.instance.friendlyProjList.Add(go.GetComponent<MyProjectile>());
+
     }
 }
