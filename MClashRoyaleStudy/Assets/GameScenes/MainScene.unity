@@ -1793,6 +1793,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2109766766}
   - component: {fileID: 2109766765}
+  - component: {fileID: 2109766767}
   m_Layer: 0
   m_Name: MyPlaceableMgr
   m_TagString: Untagged
@@ -1832,6 +1833,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2109766767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109766764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7645dd8eb827c27408236e536ce8fa31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interval: 5
 --- !u!224 &124688388705260896
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1918,6 +1932,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8571461869817054402, guid: c553fbbc2c107014fa38b413748cc747,
+        type: 3}
+      propertyPath: data.hitPoints
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5538443956064456852, guid: c553fbbc2c107014fa38b413748cc747,
         type: 3}
       propertyPath: m_Name
@@ -1998,22 +2017,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8571461869817054402, guid: c553fbbc2c107014fa38b413748cc747,
-        type: 3}
-      propertyPath: data.hitPoints
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5538443956064456854, guid: c553fbbc2c107014fa38b413748cc747,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5538443956064456848, guid: c553fbbc2c107014fa38b413748cc747,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5538443956064456850, guid: c553fbbc2c107014fa38b413748cc747,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5538443956064456854, guid: c553fbbc2c107014fa38b413748cc747,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0

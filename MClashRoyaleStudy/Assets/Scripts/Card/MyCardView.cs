@@ -59,33 +59,14 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         //TODO 与游玩区域碰撞时候的处理事件
         if (hitGround)
         {
+            //调整previewHolder的位置 就是调整所有预览状态小兵的位置, 因为小兵都在 previewHolder下
             previewHolder.transform.position = hit.point;
             //TODO 如果卡牌之前没有被拖拽出来(没有变成小兵)
             if (isDragging == false)
             {
                 //TODO 1.隐藏卡牌 2.从卡牌数据数组中找到该张卡牌的数据 3.取出小兵数据 4.取出小兵模型偏移 5.生成该卡牌对应的小兵数组, 并且将其设置为预览用的卡牌, 放到统一的节点下(previewHolder)
                 canvasGroup.alpha = 0f;
-                for (int i = 0; i < data.placeablesIndices.Length; i++)
-                {
-                    int unitId = data.placeablesIndices[i];
-                    MyPlaceable p = null;
-                    for (int j = 0; j < MyPlaceableModel.instance.list.Count; j++)
-                    {
-                        //卡牌编号 对应 兵种编号 取出兵种数据
-                        if (MyPlaceableModel.instance.list[j].id == unitId)
-                        {
-                            //找到 赋值后 就可以跳出该层循环
-                            p = MyPlaceableModel.instance.list[j];
-                            break;
-                        }
-                    }
-                    //TODO 取出小兵之间的偏移量(相對於鼠標偏移), 以及其他的属性赋值, 浅拷贝赋值, 对值类型字段操作独立出来, 防止一并修改所有的MyPlaceable对象
-                    Vector3 offset = data.relativeOffsets[i];
-                    MyPlaceable pClone =  p.Clone();
-                    pClone.faction = Faction.Player;
-                    //TODO 实例化小兵
-                    MyPlaceableMgr.instance.StartCoroutine(ResLoadAsync(pClone,offset));
-                }
+                CreatePlaceable(data,Faction.Player,previewHolder);
                 isDragging = true;
             }
         }
@@ -104,8 +85,38 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             }
         }
     }
+    /// <summary>
+    /// 公共静态方法, 用于根据卡牌数据创建小兵
+    /// </summary>
+    /// <param name="cardData"></param>
+    /// <param name="faction"></param>
+    /// <param name="parentTrans"></param>
+    /// <param name="worldOffset"></param>
+    public static void CreatePlaceable(MyCard cardData,Faction faction,Transform parentTrans = null,Vector3 worldOffset = default)
+    {
+        for (int i = 0; i < cardData.placeablesIndices.Length; i++)
+        {
+            int unitId = cardData.placeablesIndices[i];
+            MyPlaceable p = null;
+            for (int j = 0; j < MyPlaceableModel.instance.list.Count; j++)
+            {
+                //卡牌编号 对应 兵种编号 取出兵种数据
+                if (MyPlaceableModel.instance.list[j].id == unitId)
+                {
+                    //找到 赋值后 就可以跳出该层循环
+                    p = MyPlaceableModel.instance.list[j];
+                    break;
+                }
+            }
+            //TODO 取出小兵之间的偏移量(相對於鼠標偏移), 以及其他的属性赋值, 浅拷贝赋值, 对值类型字段操作独立出来, 防止一并修改所有的MyPlaceable对象
+            Vector3 offset = cardData.relativeOffsets[i];
+            MyPlaceable pClone = p.Clone();
+            pClone.faction = faction;
+            //TODO 实例化小兵
+            MyPlaceableMgr.instance.StartCoroutine(ResLoadAsync(pClone, offset,faction,parentTrans, worldOffset));
+        }
+    }
 
-    
     public void OnPointerUp(PointerEventData eventData)
     {
         if (isInteraction == false || index == -1)
@@ -141,14 +152,35 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         }
     }
 
-    IEnumerator ResLoadAsync(MyPlaceable myPlaceable, Vector3 offset) 
+    static IEnumerator ResLoadAsync(MyPlaceable myPlaceable,Vector3 offset, Faction faction,Transform parentTrans = null,Vector3 worldOffset = default) 
     {
-        var resRequest = Resources.LoadAsync<GameObject>(myPlaceable.associatedPrefab);
+        ResourceRequest resRequest = null;
+        if (faction == Faction.Player)
+        {
+            resRequest = Resources.LoadAsync<GameObject>(myPlaceable.associatedPrefab);
+        }
+        else if(faction == Faction.Opponent)
+        {
+            resRequest = Resources.LoadAsync<GameObject>(myPlaceable.alternatePrefab);
+        }
+        else 
+        {
+            throw new Exception("创造Placeable无类型判定异常");
+        }
         yield return resRequest;
         if (resRequest != null)
         {
-            var unit = GameObject.Instantiate(resRequest.asset as GameObject, previewHolder, false);
-            unit.transform.localPosition = offset;
+            GameObject unit = null;
+            if (parentTrans == null)
+            {
+                unit = GameObject.Instantiate(resRequest.asset as GameObject);
+            }
+            else 
+            {
+                unit = GameObject.Instantiate(resRequest.asset as GameObject, parentTrans, false);
+            }
+            //向量加法
+            unit.transform.localPosition = offset + worldOffset;
             unit.GetComponent<MyPlaceableView>().data = myPlaceable;
         }
     }
