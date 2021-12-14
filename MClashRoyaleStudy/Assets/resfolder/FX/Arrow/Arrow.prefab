@@ -45,10 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   caster: {fileID: 0}
-  startFirePos: {x: 0, y: 0, z: 0}
-  target: {fileID: 0}
   speed: 5
-  progress: 0
 --- !u!1 &2754727351473011906
 GameObject:
   m_ObjectHideFlags: 0

@@ -148,7 +148,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         {
             var trunit = previewHolder.GetChild(i);
             trunit.SetParent(MyPlaceableMgr.instance.transform,true);
-            MyPlaceableMgr.instance.friendlyPlaceablesList.Add(trunit.GetComponent<MyPlaceableView>());
+            MyPlaceableMgr.friendlyPlaceablesList.Add(trunit.GetComponent<MyPlaceableView>());
         }
     }
 
@@ -182,6 +182,12 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             //向量加法
             unit.transform.localPosition = offset + worldOffset;
             unit.GetComponent<MyPlaceableView>().data = myPlaceable;
+
+            //如果是敌方单位直接加到, 因为目前是单机, 直接加到敌方单位列表中
+            if (faction == Faction.Opponent)
+            {
+                MyPlaceableMgr.enemyPlaceablesList.Add(unit.GetComponent<MyPlaceableView>());
+            }
         }
     }
 }

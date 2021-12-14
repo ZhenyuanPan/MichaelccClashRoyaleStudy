@@ -15,6 +15,7 @@ class UnitAI:BattleAIBase
     {
         print("OnDealDamage");
         this.target.GetComponent<MyPlaceableView>().data.hitPoints -= this.GetComponent<MyPlaceableView>().data.damagePerAttack;
+        //死亡判定
         if (this.target.GetComponent<MyPlaceableView>().data.hitPoints <= 0)
         {
             this.target.GetComponent<MyPlaceableView>().data.hitPoints = 0;
@@ -22,7 +23,8 @@ class UnitAI:BattleAIBase
             {
                 this.target.GetComponent<Animator>().SetTrigger("IsDead");
             }
-            print($"{this.target.transform.name} is dead");
+            target.GetComponent<BattleAIBase>().state = AIState.Die;
+            this.state = AIState.Idle;
         }
     }
 
@@ -35,6 +37,5 @@ class UnitAI:BattleAIBase
         myProj.caster = this;
         //投掷物的飞行被MyPlaceableMgr统一管理, 伤害计算也在MyPlaceableMgr中计算
         MyPlaceableMgr.instance.friendlyProjList.Add(go.GetComponent<MyProjectile>());
-
     }
 }

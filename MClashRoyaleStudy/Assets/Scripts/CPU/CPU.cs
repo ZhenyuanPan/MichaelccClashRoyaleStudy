@@ -23,7 +23,7 @@ public class CPU : MonoBehaviour
             var cardList = MyCardModel.instance.list;
             //RandomRange左闭右开
             var cardData = cardList[Random.Range(0, cardList.Count)];
-            MyCardView.CreatePlaceable(cardData,Faction.Opponent,MyPlaceableMgr.instance.transform,new Vector3(Random.Range(-9f,9f),0,Random.Range(2f,7f)));
+            MyCardView.CreatePlaceable(cardData,Faction.Opponent,MyPlaceableMgr.instance.transform,new Vector3(Random.Range(-8f,8f),0,Random.Range(2f,7f)));
         }
     }
 }

@@ -9522,10 +9522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   caster: {fileID: 0}
-  startFirePos: {x: 0, y: 0, z: 0}
-  target: {fileID: 0}
-  speed: 0.1
-  progress: 0
+  speed: 3
 --- !u!1 &2348266242545143782
 GameObject:
   m_ObjectHideFlags: 0
