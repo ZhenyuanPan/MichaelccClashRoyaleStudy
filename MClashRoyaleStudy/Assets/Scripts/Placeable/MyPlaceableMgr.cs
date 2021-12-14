@@ -34,8 +34,7 @@ public class MyPlaceableMgr : MonoBehaviour
     public static List<MyPlaceableView> friendlyPlaceablesList = new List<MyPlaceableView>();
     public static List<MyPlaceableView> enemyPlaceablesList = new List<MyPlaceableView>();
     //投掷物列表
-    public List<MyProjectile> friendlyProjList = new List<MyProjectile>();
-    public List<MyProjectile> enemyProjList = new List<MyProjectile>();
+    public List<MyProjectile> allPlacesProjList = new List<MyProjectile>();
 
     private void Start()
     {
@@ -54,39 +53,58 @@ public class MyPlaceableMgr : MonoBehaviour
         UpdatePlaceable(enemyPlaceablesList);
 
         //TODO 子弹飞行和命中运算, 循环投掷物projectilelist列表
-        UpdateProjectiles(friendlyProjList);
-        UpdateProjectiles(enemyProjList);
+        UpdateProjectiles(allPlacesProjList);
     }
 
     private void UpdateProjectiles(List<MyProjectile> projList)
     {
+        //销毁列表, 用于销毁子弹
+        List<MyProjectile> destroyProjList = new List<MyProjectile>();
         for (int i = projList.Count - 1; i >= 0; i--)
         {
             var proj = projList[i];
+
+            if (proj.target == null)
+            {
+                destroyProjList.Add(proj);
+                Destroy(proj.gameObject);
+                continue;
+            }
+
             //TODO 使用匀速做移动
-            proj.transform.position = Vector3.MoveTowards(proj.transform.position,proj.caster.target.transform.position,Time.deltaTime*proj.speed);
+            proj.transform.position = Vector3.MoveTowards(proj.transform.position,proj.target.transform.position,Time.deltaTime*proj.speed);
             //投掷物击中目标
             //print(Vector3.Distance(proj.transform.position, proj.caster.target.transform.position));
-            if (Vector3.Distance(proj.transform.position, proj.caster.target.transform.position) <= 1f)
+            if (Vector3.Distance(proj.transform.position, proj.target.transform.position) <= 1f)
             {
                 //妙啊, 不用重复写代码了
                 (proj.caster as UnitAI).OnDealDamage();
                 //完成一次伤害销毁投掷物
-                projList.Remove(proj);
                 Destroy(proj.gameObject);
+                destroyProjList.Add(proj);
             }
+        }
+        //销毁子弹
+        for (int i = destroyProjList.Count-1; i >= 0 ; i--)
+        {
+            projList.Remove(destroyProjList[i]);
         }
     }
 
     private void UpdatePlaceable(List<MyPlaceableView> pViews)
     {
-        for (int i = 0; i < pViews.Count; i++)
+        for (int i = pViews.Count -1; i >= 0; i--)
         {
             /*
              * 用挂在载小兵对象上的myplaceableView脚本(已存储在该mgr->list中)
              * 来获取另一个在小兵对象上挂载的ai脚本组件
              */
             MyPlaceableView placeableView = pViews[i];
+            if (placeableView == null)
+            {
+
+                return;
+            }
             MyPlaceable data = placeableView.data;
             //因为继承自BattleAIBase,所以可以找到挂载的子类脚本组件
             BattleAIBase ai = placeableView.GetComponent<BattleAIBase>();
@@ -125,6 +143,12 @@ public class MyPlaceableMgr : MonoBehaviour
                 case AIState.Seek:
                     {
                         //判断是否进入攻击范围, 否定判断, 若不在攻击范围则
+                        if (ai.target == null)
+                        {
+                            ai.state = AIState.Idle;
+                            ani.SetBool("IsMoving", false);
+                            break;
+                        }
                         if (IsInAttackRange(placeableView.transform.position, ai.target.transform.position, placeableView.data.attackRange) == false)
                         {
                             //往敌人方向前进
@@ -143,6 +167,11 @@ public class MyPlaceableMgr : MonoBehaviour
                         ani.SetBool("IsMoving", false);
                         //先去去处理不符合逻辑的条件分支
                         //再判断一次是不是还在攻击范围内? 因为某些敌人跑的快, 如果跑出了我们的攻击范围,就去跳回idle状态。
+                        if (ai.target == null)
+                        {
+                            ai.state = AIState.Idle;
+                            break;
+                        }
                         if (IsInAttackRange(placeableView.transform.position, ai.target.transform.position, placeableView.data.attackRange) == false)
                         {
                             ai.state = AIState.Idle;
@@ -182,6 +211,15 @@ public class MyPlaceableMgr : MonoBehaviour
                         print(ai.transform.name + "死亡");
                         if (ai is BuildingAI)
                         {
+                            if (data.faction == Faction.Player)
+                            {
+                                MyPlaceableMgr.friendlyPlaceablesList.Remove(placeableView);
+                            }
+                            else if(data.faction == Faction.Opponent) 
+                            {
+                                MyPlaceableMgr.enemyPlaceablesList.Remove(placeableView); 
+                            }
+                            Destroy(ai.gameObject);
                             break;
                         }
                         nav.enabled = false;

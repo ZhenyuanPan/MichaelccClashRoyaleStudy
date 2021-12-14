@@ -4,27 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityRoyale.Placeable;
+
 
 //每个小兵都挂在一个, 控制小兵的逻辑ai脚本, 和动画事件做配合
-class UnitAI:BattleAIBase
+class UnitAI :BattleAIBase
 {
     public GameObject projectile;
     public Transform firePos;
     private MyProjectile myProj;
     public void OnDealDamage() 
     {
-        print("OnDealDamage");
         this.target.GetComponent<MyPlaceableView>().data.hitPoints -= this.GetComponent<MyPlaceableView>().data.damagePerAttack;
+        
         //死亡判定
         if (this.target.GetComponent<MyPlaceableView>().data.hitPoints <= 0)
         {
             this.target.GetComponent<MyPlaceableView>().data.hitPoints = 0;
-            if (this.target.GetComponent<Animator>() != null)
+            if (this.target.GetComponent<Animator>() != null && this.target.state != AIState.Die)
             {
                 this.target.GetComponent<Animator>().SetTrigger("IsDead");
             }
             target.GetComponent<BattleAIBase>().state = AIState.Die;
             this.state = AIState.Idle;
+            this.target = null;
+        }
+        else //受击动画判定
+        {
+            UnderAttact();
         }
     }
 
@@ -35,7 +42,31 @@ class UnitAI:BattleAIBase
         //设置投掷物的发射者
         myProj = go.GetComponent<MyProjectile>();
         myProj.caster = this;
+        myProj.target = this.target;
         //投掷物的飞行被MyPlaceableMgr统一管理, 伤害计算也在MyPlaceableMgr中计算
-        MyPlaceableMgr.instance.friendlyProjList.Add(go.GetComponent<MyProjectile>());
+        MyPlaceableMgr.instance.allPlacesProjList.Add(go.GetComponent<MyProjectile>());
+    }
+
+    public void OnDealDie() 
+    {
+        if (gameObject.GetComponent<MyPlaceableView>().data.faction == Faction.Opponent)
+        {
+            MyPlaceableMgr.enemyPlaceablesList.Remove(this.GetComponent<MyPlaceableView>());
+        }
+        else if (gameObject.GetComponent<MyPlaceableView>().data.faction == Faction.Player)
+        {
+            MyPlaceableMgr.friendlyPlaceablesList.Remove(this.GetComponent<MyPlaceableView>());
+        }
+        Destroy(this.gameObject);
+    }
+
+    public void UnderAttact() 
+    {
+        if (this.target.GetComponent<Animator>() == null)
+        {
+            return;
+        }
+        this.target.GetComponent<Animator>().SetTrigger("GetHit");
+
     }
 }

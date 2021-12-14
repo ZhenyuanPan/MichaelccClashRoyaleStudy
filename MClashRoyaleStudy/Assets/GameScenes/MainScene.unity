@@ -1397,7 +1397,7 @@ PrefabInstance:
     - target: {fileID: 7604703208740901543, guid: 37fde1b909035c344bf4e431c715880a,
         type: 3}
       propertyPath: data.hitPoints
-      value: 9999
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37fde1b909035c344bf4e431c715880a, type: 3}
@@ -1826,8 +1826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trEnemyTower: {fileID: 7422102548588160589}
   trFriendlyTower: {fileID: 860187073}
-  friendlyProjList: []
-  enemyProjList: []
+  allPlacesProjList: []
 --- !u!4 &2109766766
 Transform:
   m_ObjectHideFlags: 0
