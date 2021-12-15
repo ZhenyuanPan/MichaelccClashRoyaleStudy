@@ -15,24 +15,42 @@ class UnitAI :BattleAIBase
     private MyProjectile myProj;
     public void OnDealDamage() 
     {
+        if (this == null || target == null)
+        {
+            return;
+        }
         this.target.GetComponent<MyPlaceableView>().data.hitPoints -= this.GetComponent<MyPlaceableView>().data.damagePerAttack;
-        
         //死亡判定
         if (this.target.GetComponent<MyPlaceableView>().data.hitPoints <= 0)
         {
-            this.target.GetComponent<MyPlaceableView>().data.hitPoints = 0;
-            if (this.target.GetComponent<Animator>() != null && this.target.state != AIState.Die)
-            {
-                this.target.GetComponent<Animator>().SetTrigger("IsDead");
-            }
-            target.GetComponent<BattleAIBase>().state = AIState.Die;
-            this.state = AIState.Idle;
-            this.target = null;
+            TargetIsDie();
         }
-        else //受击动画判定
+        else 
         {
             UnderAttact();
         }
+    }
+
+    private void TargetIsDie()
+    {
+        SetDieState(this.target);
+        //自己与敌人相杀 也需要自己死亡
+        if (this.GetComponent<MyPlaceableView>().data.hitPoints <= 0)
+        {
+            SetDieState(this);
+        }
+        else
+        {
+            this.state = AIState.Idle;
+            this.target = null;
+        }
+
+    }
+
+    private void SetDieState(BattleAIBase ai)
+    {
+        ai.GetComponent<MyPlaceableView>().data.hitPoints = 0;
+        ai.GetComponent<BattleAIBase>().state = AIState.Die;
     }
 
     public void OnFireProjectile() 
@@ -60,13 +78,20 @@ class UnitAI :BattleAIBase
         Destroy(this.gameObject);
     }
 
+    /// <summary>
+    /// 用于处理攻击到敌人受伤
+    /// </summary>
     public void UnderAttact() 
     {
         if (this.target.GetComponent<Animator>() == null)
         {
             return;
         }
-        this.target.GetComponent<Animator>().SetTrigger("GetHit");
-
+        if (this.target.state != AIState.Die)
+        {
+            this.target.GetComponent<Animator>().SetTrigger("GetHit");
+        }
     }
+
+    
 }

@@ -153,6 +153,8 @@ public class MyPlaceableMgr : MonoBehaviour
                         {
                             //往敌人方向前进
                             nav.destination = ai.target.transform.position;
+                            //每次走一帧都要寻找更近的敌人
+                            ai.target = FindNearestEnemy(ai.transform.position, data.faction);
                             //别忘了跳出状态机
                             break;
                         }
@@ -208,7 +210,6 @@ public class MyPlaceableMgr : MonoBehaviour
                     break;
                 case AIState.Die:
                     {
-                        print(ai.transform.name + "死亡");
                         if (ai is BuildingAI)
                         {
                             if (data.faction == Faction.Player)
@@ -222,7 +223,10 @@ public class MyPlaceableMgr : MonoBehaviour
                             Destroy(ai.gameObject);
                             break;
                         }
+
                         nav.enabled = false;
+                        ai.GetComponent<Animator>().SetTrigger("IsDead");
+                       
                     }
                     break;
                 default:
