@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/GameScenes/ParticleEffectCreate/FireBallEffect.unity
+- path: Assets/GameScenes/ShaderEffectCreate/NonPlaceableCreateArea.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
