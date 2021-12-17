@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/GameScenes/MainScene.unity
+- path: Assets/GameScenes/ParticleEffectCreate/FireBallEffect.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

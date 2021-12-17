@@ -1,12 +1,4 @@
 Base path: D:/unityAllVessionInstall/2019.1.14f1/Editor/Data
 Cmd: initializeCompiler
-Cmd: preprocess
-  insize=7919 outsize=1514 ok=1
-Cmd: preprocess
-  insize=60161 outsize=1947 ok=1
-Cmd: preprocess
-  insize=20657 outsize=1310 ok=1
-Cmd: preprocess
-  insize=57127 outsize=1800 ok=1
 
 Quitting shader compiler process
