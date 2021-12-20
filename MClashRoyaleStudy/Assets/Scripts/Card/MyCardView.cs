@@ -15,22 +15,23 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
 {
     public MyCard data;
     public int index = -1;
-    public bool isInteraction;
     private Camera mainCam;
     private Transform previewHolder;
     private CanvasGroup canvasGroup;
+    private GameObject forbiddenArea;
     private void Start()
     {
         mainCam = Camera.main;
         previewHolder = GameObject.Find("PreviewHolder").transform;
         canvasGroup = transform.GetComponent<CanvasGroup>();
+        forbiddenArea = GameObject.Find("ForbiddenArea");
     }
 
 
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (isInteraction == false || index == -1)
+        if (index == -1 || CardManager.instance.readyInteraction == false)
         {
             return;
         }
@@ -44,18 +45,29 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
     
     public void OnDrag(PointerEventData eventData)
     {
-        if (isInteraction == false || index == -1)
+
+        if (index == -1 || CardManager.instance.readyInteraction == false)
         {
             return;
         }
-
+        //设置禁止区域显示
+        forbiddenArea.GetComponent<MeshRenderer>().enabled = true;
 
         //TODO: 移动卡牌到鼠标位置 transform.parent是canvas, 把当前transfrom pos 设置成当前canvas平面上的鼠标位置
         RectTransformUtility.ScreenPointToWorldPointInRectangle(transform.parent as RectTransform,eventData.position,null,out Vector3 posWorld);
         transform.position = posWorld;
         //TODO: 利用射线判断碰到场景属于什么位置
         Ray ray = mainCam.ScreenPointToRay(eventData.position);
-        bool hitGround = Physics.Raycast(ray,out RaycastHit hit,float.PositiveInfinity,1<<LayerMask.NameToLayer("PlayingField"));
+        Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, 1 << LayerMask.NameToLayer("ForbiddenArea") | 1 << LayerMask.NameToLayer("PlayingField"));
+        bool hitGround = false;
+        if (hit.collider == null||hit.transform.name == "ForbiddenArea")
+        {
+            hitGround = false;
+        }
+        else 
+        {
+            hitGround = true;
+        }
         //TODO 与游玩区域碰撞时候的处理事件
         if (hitGround)
         {
@@ -81,7 +93,6 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
                 //重新显示卡牌
                 isDragging = false;
                 canvasGroup.alpha = 1;
-
             }
         }
     }
@@ -119,12 +130,22 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (isInteraction == false || index == -1)
+        forbiddenArea.GetComponent<MeshRenderer>().enabled = false;
+        if (index == -1 || CardManager.instance.readyInteraction == false)
         {
             return;
         }
         Ray ray = mainCam.ScreenPointToRay(eventData.position);
-        bool hitGround = Physics.Raycast(ray,float.PositiveInfinity,1<<LayerMask.NameToLayer("PlayingField"));
+        Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, 1 << LayerMask.NameToLayer("ForbiddenArea") | 1 << LayerMask.NameToLayer("PlayingField"));
+        bool hitGround = false;
+        if (hit.collider == null || hit.transform.name == "ForbiddenArea")
+        {
+            hitGround = false;
+        }
+        else
+        {
+            hitGround = true;
+        }
         //出牌
         if (hitGround)
         {
