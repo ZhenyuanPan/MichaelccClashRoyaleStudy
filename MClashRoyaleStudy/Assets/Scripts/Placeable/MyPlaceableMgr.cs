@@ -75,7 +75,7 @@ public class MyPlaceableMgr : MonoBehaviour
             proj.transform.position = Vector3.MoveTowards(proj.transform.position,proj.target.transform.position,Time.deltaTime*proj.speed);
             //投掷物击中目标
             //print(Vector3.Distance(proj.transform.position, proj.caster.target.transform.position));
-            if (Vector3.Distance(proj.transform.position, proj.target.transform.position) <= 1f)
+            if (Vector3.Distance(proj.transform.position,new Vector3(proj.target.transform.position.x,proj.transform.position.y,proj.target.transform.position.z)) <= 1f)
             {
                 //妙啊, 不用重复写代码了
                 (proj.caster as UnitAI).OnDealDamage();
@@ -210,23 +210,22 @@ public class MyPlaceableMgr : MonoBehaviour
                     break;
                 case AIState.Die:
                     {
+                       
+
                         if (ai is BuildingAI)
                         {
-                            if (data.faction == Faction.Player)
-                            {
-                                MyPlaceableMgr.friendlyPlaceablesList.Remove(placeableView);
-                            }
-                            else if(data.faction == Faction.Opponent) 
-                            {
-                                MyPlaceableMgr.enemyPlaceablesList.Remove(placeableView); 
-                            }
-                            Destroy(ai.gameObject);
+                            Destroy(ai.gameObject, placeableView.dissolveSpeed);
                             break;
                         }
+
+                        //TODO 帧更新Dissolve效果
+
 
                         nav.enabled = false;
                         ai.GetComponent<Animator>().SetTrigger("IsDead");
                        
+
+
                     }
                     break;
                 default:
@@ -235,6 +234,37 @@ public class MyPlaceableMgr : MonoBehaviour
 
             
         }
+    }
+    /// <summary>
+    /// 这是一个供外部调用的方法, 用于初始化进入DieState, 并且仅仅会进入一次
+    /// </summary>
+    /// <param name="ai"></param>
+    public void OnEnterDie(BattleAIBase ai) 
+    {
+        //TODO: 一个只会进入一次的函数
+        if (ai.state == AIState.Die)
+        {
+            return;
+        }
+        //设置死亡状态
+        ai.GetComponent<BattleAIBase>().state = AIState.Die;
+        ai.GetComponent<MyPlaceableView>().data.hitPoints = 0;
+        //播放死亡动画
+        if (ai.GetComponent<Animator>() != null) 
+        {
+            ai.GetComponent<Animator>().SetTrigger("IsDead");
+        }
+        var view = ai.GetComponent<MyPlaceableView>();
+        //死亡溶解初始化操作
+        var renderers = ai.GetComponentsInChildren<Renderer>();
+        var color = view.data.faction == Faction.Player ? Color.red : Color.blue;
+        foreach (var rd in renderers)
+        {
+            rd.material.SetColor("_EdgeColor", color);
+            rd.material.SetFloat("_DissolveFactor", 0f);
+        }
+        //使用延迟销毁函数
+        Destroy(ai.gameObject, view.dissolveSpeed);
     }
 
     private bool IsInAttackRange(Vector3 myPos, Vector3 targetPos,float attackRange)

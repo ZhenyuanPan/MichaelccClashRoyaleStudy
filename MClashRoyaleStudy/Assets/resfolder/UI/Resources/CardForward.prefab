@@ -184,8 +184,7 @@ MonoBehaviour:
     cardPrefab: 
     placeablesIndices: 
     relativeOffsets: []
-  index: 0
-  isInteraction: 0
+  index: -1
 --- !u!225 &8814760117482659916
 CanvasGroup:
   m_ObjectHideFlags: 0

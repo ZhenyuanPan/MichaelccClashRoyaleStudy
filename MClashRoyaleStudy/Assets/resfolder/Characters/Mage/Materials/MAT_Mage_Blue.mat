@@ -82,10 +82,13 @@ Material:
     m_Floats:
     - Vector1_C83CA6B1: 1
     - Vector1_E2E3DEB3: 1
+    - _DissovleFactor: 0
+    - _EdgeWidth: 0.02
     - _EffectStart: 0
     - _EmMult: 1
     m_Colors:
     - Color_7A1F3D95: {r: 0, g: 0.061222974, b: 0.735849, a: 0}
     - Color_B07BFB3F: {r: 1.342683, g: 0.29705372, b: 2.519016, a: 0}
+    - _EdgeColor: {r: 0, g: 0.07612944, b: 1, a: 0}
     - _EmColour: {r: 2.0078433, g: 9.913726, b: 23.968628, a: 0}
     - _TexTiling: {r: 1, g: 1, b: 0, a: 0}

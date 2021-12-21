@@ -33,11 +33,11 @@ class UnitAI :BattleAIBase
 
     private void TargetIsDie()
     {
-        SetDieState(this.target);
+        MyPlaceableMgr.instance.OnEnterDie(this.target);
         //自己与敌人相杀 也需要自己死亡
         if (this.GetComponent<MyPlaceableView>().data.hitPoints <= 0)
         {
-            SetDieState(this);
+            MyPlaceableMgr.instance.OnEnterDie(this);
         }
         else
         {
@@ -45,12 +45,6 @@ class UnitAI :BattleAIBase
             this.target = null;
         }
 
-    }
-
-    private void SetDieState(BattleAIBase ai)
-    {
-        ai.GetComponent<MyPlaceableView>().data.hitPoints = 0;
-        ai.GetComponent<BattleAIBase>().state = AIState.Die;
     }
 
     public void OnFireProjectile() 
@@ -63,19 +57,6 @@ class UnitAI :BattleAIBase
         myProj.target = this.target;
         //投掷物的飞行被MyPlaceableMgr统一管理, 伤害计算也在MyPlaceableMgr中计算
         MyPlaceableMgr.instance.allPlacesProjList.Add(go.GetComponent<MyProjectile>());
-    }
-
-    public void OnDealDie() 
-    {
-        if (gameObject.GetComponent<MyPlaceableView>().data.faction == Faction.Opponent)
-        {
-            MyPlaceableMgr.enemyPlaceablesList.Remove(this.GetComponent<MyPlaceableView>());
-        }
-        else if (gameObject.GetComponent<MyPlaceableView>().data.faction == Faction.Player)
-        {
-            MyPlaceableMgr.friendlyPlaceablesList.Remove(this.GetComponent<MyPlaceableView>());
-        }
-        Destroy(this.gameObject);
     }
 
     /// <summary>
