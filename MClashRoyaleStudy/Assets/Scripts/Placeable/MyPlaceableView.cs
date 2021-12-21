@@ -7,7 +7,7 @@ using static UnityRoyale.Placeable;
 public class MyPlaceableView : MonoBehaviour
 {
     public MyPlaceable data; // 游戏单位数据
-    public float dissolveSpeed = 10f; //死亡溶解总时间
+    public float dissolveDuration = 10f; //死亡溶解总时间
     public float dissolveProgress = 0f; // 死亡溶解当前进度
 
     private void OnDestroy()

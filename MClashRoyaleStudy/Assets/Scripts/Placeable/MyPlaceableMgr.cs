@@ -210,22 +210,19 @@ public class MyPlaceableMgr : MonoBehaviour
                     break;
                 case AIState.Die:
                     {
-                       
-
                         if (ai is BuildingAI)
                         {
-                            Destroy(ai.gameObject, placeableView.dissolveSpeed);
+                            Destroy(ai.gameObject, placeableView.dissolveDuration);
                             break;
                         }
 
                         //TODO 帧更新Dissolve效果
-
-
-                        nav.enabled = false;
-                        ai.GetComponent<Animator>().SetTrigger("IsDead");
-                       
-
-
+                        var rds = ai.GetComponentsInChildren<Renderer>();
+                        placeableView.dissolveProgress += Time.deltaTime * (1 / placeableView.dissolveDuration);
+                        foreach (var rd in rds)
+                        {
+                            rd.material.SetFloat("_DissolveFactor", placeableView.dissolveProgress);
+                        }
                     }
                     break;
                 default:
@@ -246,6 +243,9 @@ public class MyPlaceableMgr : MonoBehaviour
         {
             return;
         }
+        var nav = ai.GetComponent<NavMeshAgent>();
+        nav.enabled = false;
+        
         //设置死亡状态
         ai.GetComponent<BattleAIBase>().state = AIState.Die;
         ai.GetComponent<MyPlaceableView>().data.hitPoints = 0;
@@ -255,16 +255,18 @@ public class MyPlaceableMgr : MonoBehaviour
             ai.GetComponent<Animator>().SetTrigger("IsDead");
         }
         var view = ai.GetComponent<MyPlaceableView>();
-        //死亡溶解初始化操作
+        //死亡溶解初始化操作, 把进度值初始化为0
         var renderers = ai.GetComponentsInChildren<Renderer>();
-        var color = view.data.faction == Faction.Player ? Color.red : Color.blue;
+        //注意: HDR是一种超越常值的光, 它的强度也是数学表示的! 所以我们要对传入的颜色*8倍
+        var color = view.data.faction == Faction.Player ? Color.red*8 : Color.blue*8;
+        view.dissolveProgress = 0;
         foreach (var rd in renderers)
         {
             rd.material.SetColor("_EdgeColor", color);
-            rd.material.SetFloat("_DissolveFactor", 0f);
+            rd.material.SetFloat("_DissolveFactor",view.dissolveProgress);
         }
         //使用延迟销毁函数
-        Destroy(ai.gameObject, view.dissolveSpeed);
+        Destroy(ai.gameObject, view.dissolveDuration);
     }
 
     private bool IsInAttackRange(Vector3 myPos, Vector3 targetPos,float attackRange)
