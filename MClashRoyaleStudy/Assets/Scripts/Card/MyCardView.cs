@@ -128,7 +128,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public async void OnPointerUp(PointerEventData eventData)
     {
         forbiddenArea.GetComponent<MeshRenderer>().enabled = false;
         if (index == -1 || CardManager.instance.readyInteraction == false)
@@ -152,8 +152,8 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             OnCardUsed();
             //销毁打出去的卡牌
             Destroy(this.gameObject);
-            CardManager.instance.StartCoroutine(CardManager.instance.PromoteFromDeck(index, .5f));
-            CardManager.instance.StartCoroutine(CardManager.instance.CreateCardInPreviewArea(1f));
+            await CardManager.instance.PromoteFromDeckAsync(index, .5f);
+            await CardManager.instance.CreateCardInPreviewAreaAsync(1f);
         }
         else 
         {

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Cards
+  m_EditorClassIdentifier: 
+  m_GroupName: Cards
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7a469c6b659345e4589fb5c7bf2d4bdc
+  m_SerializeEntries:
+  - m_GUID: eb43c4a28faeb5342ac1b53d2f9ecdad
+    m_Address: CardForward
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b7211474f248a2343a70db519973ed64
+    m_Address: CardViking
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3b1562075803aaf41b26f2631cd39e81
+    m_Address: CardArchers
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fef90537fff673c43a03178b5fed5666
+    m_Address: CardMage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 22f627efcbf9faa4da4fc4ec4353e5ff
+    m_Address: CardBack
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 135a9063bd8c1b540880d9a5de4ed344, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e35ac6cd792e1404fb12092fff61422b, type: 2}
+    - {fileID: 11400000, guid: ddde490b4bff8864ca6b1eb29119db5e, type: 2}
