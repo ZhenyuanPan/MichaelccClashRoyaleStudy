@@ -21,15 +21,14 @@ public class CardManager : MonoBehaviour
     {
         instance = this;
     }
-    private void Start()
+    private async void Start()
     {
         canvas.gameObject.SetActive(true);
-        //写一个异步的初始化发牌, 注意这部分被包装起来了, 也就是说它不会阻塞它下面的代码, 并且可以被Unity捕获异常
-        InitCreateCard();
+        await InitCreateCard();
     }
 
     //初始化发牌方法(异步实现)
-    public async void InitCreateCard() 
+    public async Task InitCreateCard() 
     {
         await CreateCardInPreviewAreaAsync(.1f);
         for (int i = 0; i < cardsPlaceholder.Length; i++)

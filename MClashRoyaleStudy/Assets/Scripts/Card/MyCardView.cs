@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static UnityRoyale.Placeable;
+using UnityEngine.AddressableAssets;
+using System.Threading.Tasks;
+
+
 /// <summary>
 /// MyCardView V是视图层, 处理显示界面的任务,
 /// 1. 要存储我们出牌的是第几张卡
@@ -43,7 +47,7 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
     private bool isDragging; //是否卡牌变兵, bool值默认值是false
     
     
-    public void OnDrag(PointerEventData eventData)
+    public async void OnDrag(PointerEventData eventData)
     {
 
         if (index == -1 || CardManager.instance.readyInteraction == false)
@@ -78,8 +82,15 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             {
                 //TODO 1.隐藏卡牌 2.从卡牌数据数组中找到该张卡牌的数据 3.取出小兵数据 4.取出小兵模型偏移 5.生成该卡牌对应的小兵数组, 并且将其设置为预览用的卡牌, 放到统一的节点下(previewHolder)
                 canvasGroup.alpha = 0f;
-                CreatePlaceable(data,Faction.Player,previewHolder);
+                #region await 延迟所以会造成逻辑bug, 包裹一层warpper则不会
+                //print("执行次序, 我明白为什么了, 因为await会阻塞下面的方法。所以isDragging设置不会被执行，所以会多次执行CreateP");
+                //await CreatePlaceableAsync(data, Faction.Player, previewHolder);
+                //isDragging = true; 
+                #endregion
+                #region await要写在最后
                 isDragging = true;
+                await CreatePlaceableAsync(data, Faction.Player, previewHolder);
+                #endregion
             }
         }
         else //TODO 鼠标没有命中地面(从地面放回到出牌区) 销毁预览小兵
@@ -124,7 +135,33 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             MyPlaceable pClone = p.Clone();
             pClone.faction = faction;
             //TODO 实例化小兵
-            MyPlaceableMgr.instance.StartCoroutine(ResLoadAsync(pClone, offset,faction,parentTrans, worldOffset));
+            MyPlaceableMgr.instance.StartCoroutine(ResLoadAsyncIEnumerator(pClone, offset,faction,parentTrans, worldOffset));
+           
+        }
+    }
+
+    public static async Task CreatePlaceableAsync(MyCard cardData, Faction faction, Transform parentTrans = null, Vector3 worldOffset = default)
+    {
+        for (int i = 0; i < cardData.placeablesIndices.Length; i++)
+        {
+            int unitId = cardData.placeablesIndices[i];
+            MyPlaceable p = null;
+            for (int j = 0; j < MyPlaceableModel.instance.list.Count; j++)
+            {
+                //卡牌编号 对应 兵种编号 取出兵种数据
+                if (MyPlaceableModel.instance.list[j].id == unitId)
+                {
+                    //找到 赋值后 就可以跳出该层循环
+                    p = MyPlaceableModel.instance.list[j];
+                    break;
+                }
+            }
+            //TODO 取出小兵之间的偏移量(相對於鼠標偏移), 以及其他的属性赋值, 浅拷贝赋值, 对值类型字段操作独立出来, 防止一并修改所有的MyPlaceable对象
+            Vector3 offset = cardData.relativeOffsets[i];
+            MyPlaceable pClone = p.Clone();
+            pClone.faction = faction;
+            //TODO 实例化小兵
+            await ResLoadAsync(pClone, offset, faction, parentTrans, worldOffset);
         }
     }
 
@@ -173,7 +210,33 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         }
     }
 
-    static IEnumerator ResLoadAsync(MyPlaceable myPlaceable,Vector3 offset, Faction faction,Transform parentTrans = null,Vector3 worldOffset = default) 
+    static async Task ResLoadAsync(MyPlaceable myPlaceable, Vector3 offset, Faction faction, Transform parentTrans = null, Vector3 worldOffset = default) 
+    {
+        GameObject unit = null;
+        if (faction == Faction.Player)
+        {
+            unit = await Addressables.InstantiateAsync(myPlaceable.associatedPrefab, parentTrans).Task;
+        }
+        else if (faction == Faction.Opponent)
+        {
+            unit = await Addressables.InstantiateAsync(myPlaceable.alternatePrefab).Task;
+        }
+        else
+        {
+            throw new Exception("创造Placeable无类型判定异常");
+        }
+        //向量加法
+        unit.transform.localPosition = offset + worldOffset;
+        unit.GetComponent<MyPlaceableView>().data = myPlaceable;
+
+        //如果是敌方单位直接加到, 因为目前是单机, 直接加到敌方单位列表中
+        if (faction == Faction.Opponent)
+        {
+            MyPlaceableMgr.enemyPlaceablesList.Add(unit.GetComponent<MyPlaceableView>());
+        }
+    }
+
+    static IEnumerator ResLoadAsyncIEnumerator(MyPlaceable myPlaceable,Vector3 offset, Faction faction,Transform parentTrans = null,Vector3 worldOffset = default) 
     {
         ResourceRequest resRequest = null;
         if (faction == Faction.Player)
