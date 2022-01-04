@@ -29,9 +29,9 @@ MonoBehaviour:
   m_MonoScriptBundleNaming: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 5b675b54ec4cd6a4a8d9054b6c8c7ccc
   m_RemoteCatalogLoadPath:
-    m_Id: 
+    m_Id: 5b675b54ec4cd6a4a8d9054b6c8c7ccc
   m_ContentStateBuildPath: 
   m_overridePlayerVersion: 
   m_GroupAssets:
@@ -59,7 +59,7 @@ MonoBehaviour:
       - m_Id: 5b675b54ec4cd6a4a8d9054b6c8c7ccc
         m_Value: ServerData/[BuildTarget]
       - m_Id: 4fb4133f0778e4b4baec76c50021f444
-        m_Value: http://localhost/[BuildTarget]
+        m_Value: ServerData/[BuildTarget]
     m_ProfileEntryNames:
     - m_Id: 9613d957763b3114399f71f5a5c48afd
       m_Name: BuildTarget

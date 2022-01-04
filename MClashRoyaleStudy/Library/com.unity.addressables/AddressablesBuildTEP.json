@@ -1,7 +1,7 @@
 {
-"Date": "2022/1/4 10:50:20",
+"Date": "2022/1/4 17:10:14",
 "UnityVersion": "2019.1.14f1",
 "traceEvents": [
-{"name": "Building Use Existing Build (requires built groups)", "ph": "X", "dur": 1897.8, "tid": 1, "ts": 89, "pid": 1}
+{"name": "Building Use Existing Build (requires built groups)", "ph": "X", "dur": 1534.7, "tid": 1, "ts": 80, "pid": 1}
 ]
 }
