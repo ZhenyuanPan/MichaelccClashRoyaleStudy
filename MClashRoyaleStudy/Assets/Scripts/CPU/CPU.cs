@@ -9,7 +9,7 @@ public class CPU : MonoBehaviour
     public float interval = 5; //出牌间隔
     async void Start()
     {
-        //await PlayAHand();
+        await PlayAHand();
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ public class CPU : MonoBehaviour
         while (true)
         {
             await new WaitForSeconds(interval);
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var cardList = MyCardModel.instance.list;
                 //RandomRange左闭右开

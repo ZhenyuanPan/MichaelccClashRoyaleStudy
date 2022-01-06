@@ -99,7 +99,8 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
             {
                 for (int i = previewHolder.childCount-1; i >=0; i--)
                 {
-                    Destroy(previewHolder.GetChild(i).gameObject);
+                    //Destroy(previewHolder.GetChild(i).gameObject);
+                    Addressables.ReleaseInstance(previewHolder.GetChild(i).gameObject);
                 }
                 //重新显示卡牌
                 isDragging = false;
@@ -188,7 +189,8 @@ public class MyCardView : MonoBehaviour,IDragHandler,IPointerUpHandler,IPointerD
         {
             OnCardUsed();
             //销毁打出去的卡牌
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            Addressables.ReleaseInstance(this.gameObject);
             await CardManager.instance.PromoteFromDeckAsync(index, .5f);
             await CardManager.instance.CreateCardInPreviewAreaAsync(1f);
         }

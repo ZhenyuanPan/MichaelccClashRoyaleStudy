@@ -59,8 +59,12 @@ PrefabInstance:
         type: 3}
       propertyPath: projectile
       value: 
-      objectReference: {fileID: 2348266241764958831, guid: 208c852a323ae3d44998f5b371b37ce4,
+      objectReference: {fileID: 0}
+    - target: {fileID: 986888189626717334, guid: ddbc89a2e5731354497399c2803d9354,
         type: 3}
+      propertyPath: projectile.m_AssetGUID
+      value: 090cb2b1363944e40a89de290fb7ed9e
+      objectReference: {fileID: 0}
     - target: {fileID: 677874269, guid: ddbc89a2e5731354497399c2803d9354, type: 3}
       propertyPath: m_Layer
       value: 13

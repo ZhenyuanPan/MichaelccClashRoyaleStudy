@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using static UnityRoyale.Placeable;
 
 
 //每个小兵都挂在一个, 控制小兵的逻辑ai脚本, 和动画事件做配合
 class UnitAI :BattleAIBase
 {
-    public GameObject projectile;
+    //public GameObject projectile;
+    public AssetReference projectile;
     public Transform firePos;
     private MyProjectile myProj;
     public void OnDealDamage() 
@@ -47,10 +49,10 @@ class UnitAI :BattleAIBase
 
     }
 
-    public void OnFireProjectile() 
+    public async void OnFireProjectile() 
     {
         //实例化一个投射物
-        var go = Instantiate<GameObject>(projectile,firePos.position,Quaternion.identity);//放在手部位置(世界坐标),但是不以手部位父节点(不跟手移动)
+        GameObject go = await Addressables.InstantiateAsync(projectile, firePos.position, Quaternion.identity).Task; //放在手部位置(世界坐标),但是不以手部位父节点(不跟手移动)
         //设置投掷物的发射者
         myProj = go.GetComponent<MyProjectile>();
         myProj.caster = this;

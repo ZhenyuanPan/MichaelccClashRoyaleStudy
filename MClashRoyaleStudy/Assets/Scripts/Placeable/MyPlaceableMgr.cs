@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityRoyale.Placeable;
 using DG.Tweening;
+using UnityEngine.AddressableAssets;
 
 public partial class MyPlaceable 
 {
@@ -67,7 +68,8 @@ public class MyPlaceableMgr : MonoBehaviour
             if (proj.target == null)
             {
                 destroyProjList.Add(proj);
-                Destroy(proj.gameObject);
+                //Destroy(proj.gameObject);
+                Addressables.ReleaseInstance(proj.gameObject);
                 continue;
             }
 
@@ -80,7 +82,8 @@ public class MyPlaceableMgr : MonoBehaviour
                 //妙啊, 不用重复写代码了
                 (proj.caster as UnitAI).OnDealDamage();
                 //完成一次伤害销毁投掷物
-                Destroy(proj.gameObject);
+                //Destroy(proj.gameObject);
+                Addressables.ReleaseInstance(proj.gameObject);
                 destroyProjList.Add(proj);
             }
         }
@@ -212,7 +215,8 @@ public class MyPlaceableMgr : MonoBehaviour
                     {
                         if (ai is BuildingAI)
                         {
-                            Destroy(ai.gameObject, placeableView.dissolveDuration);
+                            //Destroy(ai.gameObject, placeableView.dissolveDuration);
+                            Addressables.ReleaseInstance(ai.gameObject);
                             break;
                         }
 
@@ -236,7 +240,7 @@ public class MyPlaceableMgr : MonoBehaviour
     /// 这是一个供外部调用的方法, 用于初始化进入DieState, 并且仅仅会进入一次
     /// </summary>
     /// <param name="ai"></param>
-    public void OnEnterDie(BattleAIBase ai) 
+    public async void OnEnterDie(BattleAIBase ai) 
     {
         //TODO: 一个只会进入一次的函数
         if (ai.state == AIState.Die)
@@ -266,7 +270,9 @@ public class MyPlaceableMgr : MonoBehaviour
             rd.material.SetFloat("_DissolveFactor",view.dissolveProgress);
         }
         //使用延迟销毁函数
-        Destroy(ai.gameObject, view.dissolveDuration);
+        //Destroy(ai.gameObject, view.dissolveDuration);
+        await new WaitForSeconds(view.dissolveDuration);
+        Addressables.ReleaseInstance(ai.gameObject);
     }
 
     private bool IsInAttackRange(Vector3 myPos, Vector3 targetPos,float attackRange)

@@ -1579,6 +1579,8 @@ MonoBehaviour:
     lifeTime: 0
     damagePerSecond: 0
     faction: 2
+  dissolveDuration: 10
+  dissolveProgress: 0
 --- !u!114 &986888189626717334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1594,8 +1596,11 @@ MonoBehaviour:
   target: {fileID: 0}
   state: 0
   lastBlowTime: 0
-  projectile: {fileID: 2348266241764958831, guid: 16df5ca33880bf7409922364f4bdcc3d,
-    type: 3}
+  projectile:
+    m_AssetGUID: 88fd9b65d9e83294b9760c3c7d440f33
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   firePos: {fileID: 1360762279}
 --- !u!1 &1135473222
 GameObject:
