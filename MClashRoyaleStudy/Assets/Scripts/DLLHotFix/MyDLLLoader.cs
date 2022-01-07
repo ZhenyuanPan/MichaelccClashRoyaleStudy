@@ -31,6 +31,10 @@ public class MyDLLLoader : MonoBehaviour
         Type type = ass.GetType("HelloDLL");
         //参数一 调用对象(静态无实例化调用对象所以是null) 参数二 方法的参数列表(SayHello方法无参数所以是null)
         type.GetMethod("SayHello").Invoke(null,null);
+
+        //释放内存资源
+        Addressables.Release<TextAsset>(dll);
+        Addressables.Release<TextAsset>(pdb);
     }
 
 }
