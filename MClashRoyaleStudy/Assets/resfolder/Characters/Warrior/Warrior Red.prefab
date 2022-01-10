@@ -844,7 +844,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3983151366118623527}
   - component: {fileID: 4942601917638766232}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Warrior_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1154,7 +1154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 616024427265380436}
   - component: {fileID: 9079477636060439939}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Warrior_Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

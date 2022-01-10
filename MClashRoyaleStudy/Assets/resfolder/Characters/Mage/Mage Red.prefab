@@ -590,7 +590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677874270}
   - component: {fileID: 677874271}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Mage_Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2653,7 +2653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2022460060}
   - component: {fileID: 2022460061}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Mage_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2864,6 +2864,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fire Red
       objectReference: {fileID: 0}
+    - target: {fileID: 2348266241764958831, guid: 16df5ca33880bf7409922364f4bdcc3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2348266241764958832, guid: 16df5ca33880bf7409922364f4bdcc3d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2919,6 +2924,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 133694611614709299, guid: 16df5ca33880bf7409922364f4bdcc3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2348266242545143782, guid: 16df5ca33880bf7409922364f4bdcc3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2348266242546828558, guid: 16df5ca33880bf7409922364f4bdcc3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645378951462034998, guid: 16df5ca33880bf7409922364f4bdcc3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5043737225584452685, guid: 16df5ca33880bf7409922364f4bdcc3d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 16df5ca33880bf7409922364f4bdcc3d, type: 3}
@@ -2939,6 +2964,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FaceFire
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052028774637471983, guid: d43ab4448d19fb949a5003f639b54609,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1052028774637471982, guid: d43ab4448d19fb949a5003f639b54609,
         type: 3}
