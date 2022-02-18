@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UIPages
+  m_EditorClassIdentifier: 
+  m_GroupName: UIPages
+  m_Data:
+    m_SerializedData: []
+  m_GUID: f9445caaff67f7041bb418bbe55f030e
+  m_SerializeEntries:
+  - m_GUID: 9a442e871b9b5f0408a5a4b908b9d7ef
+    m_Address: BottomFixPage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7db042f607c74ad49b2dc716d626afff
+    m_Address: LoginPage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 463d7a4f97d03e14eb1c3e46cb5c3e03
+    m_Address: LogoPage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5d060569da021e94f87446dc93185979
+    m_Address: MainPage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 39a45c6edf74e00428747f1f91ca8c49
+    m_Address: TopFixPage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 84c756f3be31c2845bbf01076da93355
+    m_Address: DeckPage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0bee4b7e9c84a6149bbe864d52a246d6
+    m_Address: GameOverPage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 135a9063bd8c1b540880d9a5de4ed344, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e7b64d8e73def5e41babe946a2ce7e96, type: 2}
+    - {fileID: 11400000, guid: f147e98dbfcc2594799b3a8b4682b082, type: 2}

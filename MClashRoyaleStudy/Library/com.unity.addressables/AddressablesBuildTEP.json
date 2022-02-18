@@ -1,7 +1,7 @@
 {
-"Date": "2022/1/10 17:33:51",
+"Date": "2022/2/18 10:38:47",
 "UnityVersion": "2019.1.14f1",
 "traceEvents": [
-{"name": "Building Use Existing Build (requires built groups)", "ph": "X", "dur": 1821.3, "tid": 1, "ts": 102, "pid": 1}
+{"name": "Building Use Asset Database (fastest)", "ph": "X", "dur": 1029.1, "tid": 1, "ts": 5626, "pid": 1}
 ]
 }

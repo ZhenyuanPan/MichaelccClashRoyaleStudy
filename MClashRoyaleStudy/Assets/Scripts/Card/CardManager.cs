@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 using System.Threading.Tasks;
 using System;
 using System.Runtime.CompilerServices;
-
+using MCUIFramework;
 public class CardManager : MonoBehaviour
 {
     public bool readyInteraction = false;
@@ -23,8 +23,12 @@ public class CardManager : MonoBehaviour
     }
     private async void Start()
     {
-        canvas.gameObject.SetActive(true);
-        await InitCreateCard();
+        //加载出牌区ui, 创建卡牌必须在出牌区创建完毕再执行
+        //由于await是异步关键字, 放在lambda表达式,lambada表达式必须标记为async方法。（await和async成对出现）
+        UIPage._ShowPage<DeckPage>(true,null,async()=>
+        {
+            await InitCreateCard();
+        });
     }
 
     //初始化发牌方法(异步实现)
@@ -55,7 +59,7 @@ public class CardManager : MonoBehaviour
         //给卡牌view 的数据赋值, 在previewArea(预览区中) 不决定是第几张卡牌, 在出牌区决定是第几张牌,是否准许点击事件.
         //TODO 是否能捕获异常
         previewCard.GetComponent<MyCardView>().data = card;
-        if (canvas.childCount == 8)
+        if (canvas.childCount == 9)
         {
             readyInteraction = true;
         }

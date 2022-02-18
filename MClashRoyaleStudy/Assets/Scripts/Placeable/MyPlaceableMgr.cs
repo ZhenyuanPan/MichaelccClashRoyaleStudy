@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using static UnityRoyale.Placeable;
 using DG.Tweening;
 using UnityEngine.AddressableAssets;
-
+using MCUIFramework;
 public partial class MyPlaceable 
 {
     public Faction faction = Faction.None;
@@ -217,6 +217,7 @@ public class MyPlaceableMgr : MonoBehaviour
                         {
                             //Destroy(ai.gameObject, placeableView.dissolveDuration);
                             Addressables.ReleaseInstance(ai.gameObject);
+                           
                             break;
                         }
 
@@ -248,8 +249,23 @@ public class MyPlaceableMgr : MonoBehaviour
             return;
         }
         var nav = ai.GetComponent<NavMeshAgent>();
-        nav.enabled = false;
-        
+        // 为空检查, 建筑目标无法移动, 没有导航组件
+        if (nav != null)
+        {
+            nav.enabled = false;
+        }
+        // 显示gameover页面, 如果target是个国王塔死亡的话
+        //KBEngine事件系统注册该事件
+
+        if (ai.transform == trEnemyTower || ai.transform == trFriendlyTower)
+        {
+            //因为可能有多处需要处理游戏结束事件, 所以不能直接执行死亡处理, 而是要发消息, 让每个订阅该事件的模块都有机会处理该事件
+            var faction = ai.GetComponent<MyPlaceableView>().data.faction;
+            KBEngine.Event.fireOut("OnGameOver",faction);
+            //显示GameOver页面
+            UIPage._ShowPage<GameOverPage>(true,faction);
+        }
+
         //设置死亡状态
         ai.GetComponent<BattleAIBase>().state = AIState.Die;
         ai.GetComponent<MyPlaceableView>().data.hitPoints = 0;
@@ -272,7 +288,10 @@ public class MyPlaceableMgr : MonoBehaviour
         //使用延迟销毁函数
         //Destroy(ai.gameObject, view.dissolveDuration);
         await new WaitForSeconds(view.dissolveDuration);
-        Addressables.ReleaseInstance(ai.gameObject);
+        if (ai!= null)
+        {
+            Addressables.ReleaseInstance(ai.gameObject);
+        }
     }
 
     private bool IsInAttackRange(Vector3 myPos, Vector3 targetPos,float attackRange)

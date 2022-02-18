@@ -1,0 +1,17 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using MCUIFramework;
+
+public partial class {ROOT_UI_NAME} : UIPage
+{
+    {UI_WIDGET_FIELD_LIST}
+    protected override string UIPath => "{UI_PATH}";
+    protected override void OnAwake() 
+    {
+        {FIELD_INITIALIZATION_LIST}
+        OnStart();
+    }
+    
+}
