@@ -10,7 +10,7 @@ using System.Text;
 using System.Data;
 using Excel;
 
-public class Table2Script : MonoBehaviour
+public class Table2Script
 {
     public enum TypeHint 
     {
@@ -139,7 +139,7 @@ public partial class {CLASS_NAME}
             GenerateScript(data, outPath);
         }
         AssetDatabase.Refresh();
-        print("代码生成完毕");
+        Debug.Log("代码生成完毕");
     }
 
 
@@ -154,7 +154,7 @@ public partial class {CLASS_NAME}
             GenerateScript(data, outPath);
         }
         AssetDatabase.Refresh();
-        print("代码生成完毕");
+        Debug.Log("代码生成完毕");
     }
 
 
@@ -162,7 +162,7 @@ public partial class {CLASS_NAME}
     static void GenerateScript(string[][] data, string path) 
     {
         string className = data[META_VALUE][1];
-        print(className);
+        Debug.Log(className);
         string rowName = data[META_VALUE][2];
         StringBuilder rowList = new StringBuilder();
         for (int row = DATA_ROW_START; row < data.Length; row++)
